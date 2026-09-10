@@ -9,7 +9,7 @@ tasks = [
     {"id": 3, "title": "Push to GitHub", "done": True},
 ]
 class NewTask(BaseModel):
-    title: str
+    title: str | None = None
 
 @app.get("/")
 def read_root():
@@ -36,7 +36,7 @@ def get_task(task_id: int):
 
 @app.post("/tasks", status_code=201)
 def create_task(new_task: NewTask):
-    if not new_task.title.strip():
+    if not new_task.title or not new_task.title.strip():
         raise HTTPException(status_code=400, detail="Title cannot be empty")
 
     next_id = max((t["id"] for t in tasks), default=0) + 1
