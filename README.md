@@ -43,6 +43,34 @@ content-type: application/json
 
 ![Swagger UI](swagger-screenshot.png)
 
-## Note on data persistence
 
-This API stores tasks in memory only — all data is lost when the server restarts. This is intentional for this stage of the project; a real database is introduced in the following assignment.
+## Assignment - 2
+## Database
+
+This project now uses SQLite instead of an in-memory list, so data survives a server restart.
+
+**Why SQLite:** it's a single file (`tasks.db`), needs no separate server or install, and is perfect for a small project like this. For a larger production app with many concurrent users, you'd reach for something like PostgreSQL instead.
+
+`tasks.db` is created automatically the first time the app runs, and is git-ignored — every fresh clone starts with its own database, seeded with the same 3 example tasks.
+
+### Run it
+
+\`\`\`bash
+python3 -m venv venv
+source venv/bin/activate      # Windows: venv\Scripts\activate
+pip install fastapi uvicorn
+uvicorn main:app --reload --port 8000
+\`\`\`
+
+`tasks.db` will be created automatically on first run.
+
+### Example SQL query
+
+\`\`\`sql
+SELECT COUNT(*) FROM tasks;
+\`\`\`
+Returned `3` after the initial seed, confirming the seed-once logic worked correctly and didn't duplicate on restart.
+
+### DB Browser screenshot
+
+![DB Browser](db-browser-screenshot.png)
